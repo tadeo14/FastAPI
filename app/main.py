@@ -1,24 +1,21 @@
-from pydantic import BaseModel, Field
-from typing import Union, Optional, Annotated
-from fastapi import FastAPI, HTTPException, Form, Path, File, UploadFile
+from fastapi import FastAPI
+
+from .routers import todo, support
 
 
 
 app = FastAPI(
 	title="FastAPI",
-)   #se le llama instancia 
-
-TODO_LIST = [
-	    {"id":1, "description": "Learn Python", "complete": True},
-		{"id":2, "description": "FastAPI", "complete": False},
-		{"id":3, "description": "FastAPI", "complete": True}
-		
-]
-
-class Todo(BaseModel):
-	id: Optional[int] = None 
-	description: str = Field(min_length=5, max_length=500)
-	complete: bool = Field(default=False)
+)   
+#se le llama instancia 
+app.include_router(todo.router)
+app.include_router(support.router)
 
 
-
+#instancia 
+@app.get("/")
+async def home():
+    return {
+        "name": "TODO rest api",
+        "version": "1.0"
+	}
