@@ -1,7 +1,13 @@
+from enum import Enum
 from fastapi import FastAPI
 
 from .routers import todo, support
 
+
+class Tags(Enum):
+    home: str = "Home",
+	
+    
 
 
 app = FastAPI(
@@ -13,7 +19,7 @@ app.include_router(support.router)
 
 
 #instancia 
-@app.get("/")
+@app.get("/", tags=[Tags.home])
 async def home():
     return {
         "name": "TODO rest api",
